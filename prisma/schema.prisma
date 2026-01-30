@@ -1,0 +1,312 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CUSTOMER
+  PHARMACIST
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PrescriptionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  phone         String?   @unique
+  password      String
+  name          String
+  role          Role      @default(CUSTOMER)
+  emailVerified Boolean   @default(false)
+  phoneVerified Boolean   @default(false)
+  image         String?
+  address       String?
+  city          String?
+  state         String?
+  zipCode       String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  orders        Order[]
+  prescriptions Prescription[]
+  reviews       Review[]
+  wishlist      WishlistItem[]
+  cart          CartItem[]
+  refreshTokens RefreshToken[]
+  
+  @@index([email])
+  @@index([phone])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([token])
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  image       String?
+  parentId    String?
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  parent      Category?  @relation("CategoryToCategory", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryToCategory")
+  medicines   Medicine[]
+  
+  @@index([slug])
+  @@index([parentId])
+}
+
+model Brand {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  logo        String?
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  medicines   Medicine[]
+  
+  @@index([slug])
+}
+
+model Medicine {
+  id                    String   @id @default(cuid())
+  name                  String
+  slug                  String   @unique
+  genericName           String
+  description           String   @db.Text
+  dosage                String
+  form                  String   // tablet, capsule, syrup, etc.
+  strength              String
+  packSize              String
+  manufacturer          String
+  
+  price                 Float
+  discountPrice         Float?
+  stock                 Int      @default(0)
+  
+  prescriptionRequired  Boolean  @default(false)
+  featured              Boolean  @default(false)
+  active                Boolean  @default(true)
+  
+  categoryId            String
+  brandId               String?
+  
+  images                String[] // Array of image URLs
+  
+  // Medical Information
+  uses                  String   @db.Text
+  sideEffects           String   @db.Text
+  warnings              String   @db.Text
+  interactions          String   @db.Text
+  contraindications     String   @db.Text
+  
+  // Metadata
+  sku                   String   @unique
+  barcode               String?  @unique
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  category              Category     @relation(fields: [categoryId], references: [id])
+  brand                 Brand?       @relation(fields: [brandId], references: [id])
+  orderItems            OrderItem[]
+  reviews               Review[]
+  wishlistItems         WishlistItem[]
+  cartItems             CartItem[]
+  
+  @@index([slug])
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([genericName])
+  @@index([prescriptionRequired])
+  @@index([featured])
+  @@index([active])
+}
+
+model Order {
+  id                String        @id @default(cuid())
+  orderNumber       String        @unique
+  userId            String
+  
+  status            OrderStatus   @default(PENDING)
+  paymentStatus     PaymentStatus @default(PENDING)
+  
+  // Amounts
+  subtotal          Float
+  tax               Float         @default(0)
+  deliveryFee       Float         @default(0)
+  discount          Float         @default(0)
+  total             Float
+  
+  // Delivery Information
+  deliveryAddress   String
+  deliveryCity      String
+  deliveryState     String
+  deliveryZipCode   String
+  deliveryPhone     String
+  
+  // Prescription
+  prescriptionId    String?       @unique
+  
+  // Notes
+  notes             String?
+  
+  // Tracking
+  trackingNumber    String?
+  estimatedDelivery DateTime?
+  deliveredAt       DateTime?
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  // Relations
+  user              User          @relation(fields: [userId], references: [id])
+  prescription      Prescription? @relation(fields: [prescriptionId], references: [id])
+  items             OrderItem[]
+  
+  @@index([userId])
+  @@index([orderNumber])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  orderId    String
+  medicineId String
+  
+  quantity   Int
+  price      Float
+  discount   Float    @default(0)
+  total      Float
+  
+  createdAt  DateTime @default(now())
+  
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  
+  @@index([orderId])
+  @@index([medicineId])
+}
+
+model Prescription {
+  id          String             @id @default(cuid())
+  userId      String
+  
+  image       String             // URL to uploaded prescription image
+  status      PrescriptionStatus @default(PENDING)
+  
+  notes       String?
+  adminNotes  String?            // Notes from pharmacist/admin
+  
+  approvedBy  String?
+  approvedAt  DateTime?
+  
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  
+  user        User               @relation(fields: [userId], references: [id])
+  order       Order?
+  
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  userId     String
+  medicineId String
+  
+  rating     Int      // 1-5
+  comment    String?  @db.Text
+  verified   Boolean  @default(false) // Verified purchase
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medicine   Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, medicineId])
+  @@index([medicineId])
+  @@index([rating])
+}
+
+model WishlistItem {
+  id         String   @id @default(cuid())
+  userId     String
+  medicineId String
+  
+  createdAt  DateTime @default(now())
+  
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medicine   Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, medicineId])
+  @@index([userId])
+}
+
+model CartItem {
+  id         String   @id @default(cuid())
+  userId     String
+  medicineId String
+  
+  quantity   Int      @default(1)
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medicine   Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, medicineId])
+  @@index([userId])
+}

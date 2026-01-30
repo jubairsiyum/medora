@@ -1,0 +1,46 @@
+{
+  "name": "Medora - Online Pharmacy",
+  "short_name": "Medora",
+  "description": "Your trusted online pharmacy - Quality medicines delivered to your doorstep",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["health", "medical", "shopping"],
+  "shortcuts": [
+    {
+      "name": "Browse Medicines",
+      "url": "/medicines",
+      "description": "Browse all available medicines"
+    },
+    {
+      "name": "Upload Prescription",
+      "url": "/prescription",
+      "description": "Upload your prescription"
+    },
+    {
+      "name": "My Orders",
+      "url": "/dashboard/orders",
+      "description": "View your orders"
+    }
+  ]
+}
