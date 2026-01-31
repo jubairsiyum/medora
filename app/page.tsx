@@ -1,46 +1,47 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { ArrowRight, Shield, Truck, Clock, FileText, Star, Pill, Sparkles, Heart, CheckCircle, TrendingUp } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, Truck, Clock, Shield, Phone, MapPin, Users, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Header } from '@/components/layout/header';
+import { Header } from '@/components/layout/header-new';
 import { Footer } from '@/components/layout/footer';
+import { HeroSlider } from '@/components/home/hero-slider';
+import { CategorySidebar } from '@/components/home/category-sidebar';
+import { MobileCategorySidebar } from '@/components/home/mobile-category-sidebar';
 import { MedicineCard } from '@/components/medicine/medicine-card';
-
-interface Medicine {
-  id: string;
-  name: string;
-  slug: string;
-  genericName: string;
-  price: number;
-  discountPrice?: number;
-  stock: number;
-  prescriptionRequired: boolean;
-  images: string[];
-  category: { name: string; slug: string };
-  brand?: { name: string; slug: string };
-}
+import { Medicine } from '@/types';
 
 export default function Home() {
   const [featuredMedicines, setFeaturedMedicines] = useState<Medicine[]>([]);
+  const [topMedicines, setTopMedicines] = useState<Medicine[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    fetchFeaturedMedicines();
+    fetchMedicines();
   }, []);
 
-  const fetchFeaturedMedicines = async () => {
+  const fetchMedicines = async () => {
     try {
-      const response = await fetch('/api/medicines?featured=true&limit=8');
-      if (response.ok) {
-        const data = await response.json();
+      const [featured, top] = await Promise.all([
+        fetch('/api/medicines?featured=true&limit=8'),
+        fetch('/api/medicines?limit=8&sort=popularity'),
+      ]);
+
+      if (featured.ok) {
+        const data = await featured.json();
         setFeaturedMedicines(data.medicines || []);
       }
+
+      if (top.ok) {
+        const data = await top.json();
+        setTopMedicines(data.medicines || []);
+      }
     } catch (error) {
-      console.error('Failed to fetch featured medicines:', error);
+      console.error('Failed to fetch medicines:', error);
     } finally {
       setLoading(false);
     }
@@ -49,6 +50,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
+      <MobileCategorySidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
       
       <main className="flex-1">
         {/* Hero Section - Modern Gradient Design */}
