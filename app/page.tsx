@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Truck, Clock, Shield, Phone, MapPin, Users, TrendingUp } from 'lucide-react';
+import { ArrowRight, Truck, Clock, Shield, Phone, MapPin, Users, TrendingUp, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
