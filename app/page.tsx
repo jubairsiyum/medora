@@ -132,101 +132,179 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-20 md:py-32">
+        {/* Features Section - Bento Grid Style */}
+        <section className="py-24 md:py-32 bg-white dark:bg-slate-950">
           <div className="container">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Why Choose Medora?</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                We're committed to providing you with the best healthcare experience
+            <div className="text-center mb-16">
+              <Badge className="mb-4 bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border-0">
+                Why Choose Us
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+                Healthcare at Your Fingertips
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                Experience the future of pharmacy with our comprehensive healthcare solutions
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              <Card className="border-2 hover:border-primary transition-colors">
-                <CardContent className="pt-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                    <Shield className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">100% Genuine Medicines</h3>
-                  <p className="text-sm text-muted-foreground">
-                    All medicines are sourced directly from manufacturers and authorized distributors
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 hover:border-primary transition-colors">
-                <CardContent className="pt-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                    <Truck className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Fast Delivery</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Get your medicines delivered within 24-48 hours across Bangladesh
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 hover:border-primary transition-colors">
-                <CardContent className="pt-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                    <FileText className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Easy Prescription Upload</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Simply upload your prescription and our pharmacists will verify it
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 hover:border-primary transition-colors">
-                <CardContent className="pt-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                    <Clock className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">24/7 Support</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Our team is always available to help you with your healthcare needs
-                  </p>
-                </CardContent>
-              </Card>
+              {[
+                {
+                  icon: Shield,
+                  title: '100% Genuine',
+                  description: 'All medicines sourced directly from authorized distributors',
+                  gradient: 'from-blue-500 to-cyan-500',
+                  delay: '0'
+                },
+                {
+                  icon: Truck,
+                  title: 'Express Delivery',
+                  description: 'Get your medicines within 24-48 hours across Bangladesh',
+                  gradient: 'from-purple-500 to-pink-500',
+                  delay: '100'
+                },
+                {
+                  icon: FileText,
+                  title: 'Easy Prescription',
+                  description: 'Upload prescription and our pharmacists will verify instantly',
+                  gradient: 'from-orange-500 to-red-500',
+                  delay: '200'
+                },
+                {
+                  icon: Clock,
+                  title: '24/7 Support',
+                  description: 'Round-the-clock assistance for all your healthcare needs',
+                  gradient: 'from-teal-500 to-emerald-500',
+                  delay: '300'
+                },
+              ].map((feature, idx) => (
+                <Card 
+                  key={idx}
+                  className="group relative overflow-hidden border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
+                  style={{ animationDelay: `${feature.delay}ms` }}
+                >
+                  <CardContent className="p-8">
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform duration-500`}>
+                      <feature.icon className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="font-bold text-xl mb-3 text-slate-900 dark:text-slate-100">{feature.title}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                  {/* Hover Effect Background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+                </Card>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Categories Section */}
-        <section className="py-20 md:py-32 bg-muted/40">
+        {/* Featured Medicines - Modern Carousel */}
+        <section className="py-24 md:py-32 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-950">
           <div className="container">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Shop by Category</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Find medicines by browsing our comprehensive categories
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <Badge className="mb-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-0">
+                  <TrendingUp className="w-4 h-4 mr-2 inline" />
+                  Trending Now
+                </Badge>
+                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+                  Featured Medicines
+                </h2>
+              </div>
+              <Button 
+                asChild 
+                variant="outline"
+                className="hidden md:flex border-2 border-slate-300 dark:border-slate-700 hover:border-blue-600 dark:hover:border-blue-500 rounded-full"
+              >
+                <Link href="/medicines">
+                  View All
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+
+            {loading ? (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <Card key={i} className="animate-pulse border-slate-200 dark:border-slate-800">
+                    <CardContent className="p-6">
+                      <div className="aspect-square bg-slate-200 dark:bg-slate-700 rounded-xl mb-4" />
+                      <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded mb-3" />
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : featuredMedicines.length > 0 ? (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {featuredMedicines.map((medicine) => (
+                  <MedicineCard key={medicine.id} medicine={medicine} />
+                ))}
+              </div>
+            ) : (
+              <Card className="border-slate-200 dark:border-slate-800">
+                <CardContent className="p-12 text-center">
+                  <Pill className="h-16 w-16 mx-auto mb-4 text-slate-400" />
+                  <p className="text-slate-600 dark:text-slate-400">No featured medicines available</p>
+                </CardContent>
+              </Card>
+            )}
+
+            <div className="text-center mt-8 md:hidden">
+              <Button asChild className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full">
+                <Link href="/medicines">View All Medicines</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Categories Section - Modern Grid */}
+        <section className="py-24 md:py-32 bg-white dark:bg-slate-950">
+          <div className="container">
+            <div className="text-center mb-16">
+              <Badge className="mb-4 bg-slate-100 text-slate-700 dark:bg-slate-900 dark:text-slate-300 border-0">
+                Browse by Category
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+                Shop by Category
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                Find exactly what you need from our comprehensive range
               </p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { name: 'Pain Relief', icon: '💊', count: '150+ products' },
-                { name: 'Vitamins & Supplements', icon: '🌿', count: '200+ products' },
-                { name: 'Cold & Flu', icon: '🤧', count: '80+ products' },
-                { name: 'Diabetes Care', icon: '💉', count: '120+ products' },
-                { name: 'Heart Health', icon: '❤️', count: '90+ products' },
-                { name: 'Digestive Health', icon: '🫀', count: '110+ products' },
-                { name: 'Skin Care', icon: '✨', count: '180+ products' },
-                { name: 'Baby Care', icon: '👶', count: '140+ products' },
-              ].map((category) => (
+                { name: 'Pain Relief', icon: '💊', count: '150+', gradient: 'from-red-500/10 to-orange-500/10', border: 'hover:border-red-500' },
+                { name: 'Vitamins & Supplements', icon: '🌿', count: '200+', gradient: 'from-green-500/10 to-emerald-500/10', border: 'hover:border-green-500' },
+                { name: 'Cold & Flu', icon: '🤧', count: '80+', gradient: 'from-blue-500/10 to-cyan-500/10', border: 'hover:border-blue-500' },
+                { name: 'Diabetes Care', icon: '💉', count: '120+', gradient: 'from-purple-500/10 to-pink-500/10', border: 'hover:border-purple-500' },
+                { name: 'Heart Health', icon: '❤️', count: '90+', gradient: 'from-rose-500/10 to-red-500/10', border: 'hover:border-rose-500' },
+                { name: 'Digestive Health', icon: '🫀', count: '110+', gradient: 'from-amber-500/10 to-yellow-500/10', border: 'hover:border-amber-500' },
+                { name: 'Skin Care', icon: '✨', count: '180+', gradient: 'from-pink-500/10 to-fuchsia-500/10', border: 'hover:border-pink-500' },
+                { name: 'Baby Care', icon: '👶', count: '140+', gradient: 'from-sky-500/10 to-blue-500/10', border: 'hover:border-sky-500' },
+              ].map((category, idx) => (
                 <Link
                   key={category.name}
                   href={`/medicines?category=${category.name.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
-                  className="group"
+                  className="group block"
                 >
-                  <Card className="hover:border-primary transition-all hover:shadow-md">
-                    <CardContent className="pt-6 text-center">
-                      <div className="text-4xl mb-3">{category.icon}</div>
-                      <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
-                        {category.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{category.count}</p>
+                  <Card className={`border-2 border-slate-200 dark:border-slate-800 ${category.border} transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 overflow-hidden`}>
+                    <CardContent className="p-8 text-center relative">
+                      <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                      <div className="relative z-10">
+                        <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                          {category.icon}
+                        </div>
+                        <h3 className="font-bold text-lg mb-2 text-slate-900 dark:text-slate-100 group-hover:text-slate-900 dark:group-hover:text-slate-100">
+                          {category.name}
+                        </h3>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
+                          {category.count} products
+                        </p>
+                      </div>
                     </CardContent>
                   </Card>
                 </Link>
@@ -235,71 +313,122 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How It Works */}
-        <section className="py-20 md:py-32">
+        {/* How It Works - Timeline Style */}
+        <section className="py-24 md:py-32 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-900 dark:to-slate-950">
           <div className="container">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+            <div className="text-center mb-16">
+              <Badge className="mb-4 bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border-0">
+                Simple Process
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+                How It Works
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
                 Get your medicines in three simple steps
               </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-3 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="mb-4 mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-2xl">
-                  1
+            <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
+              {[
+                {
+                  step: '1',
+                  title: 'Search or Upload',
+                  description: 'Search for medicines or upload your prescription for quick processing',
+                  gradient: 'from-blue-500 to-cyan-500'
+                },
+                {
+                  step: '2',
+                  title: 'Add & Checkout',
+                  description: 'Review your order and complete secure payment with multiple options',
+                  gradient: 'from-purple-500 to-pink-500'
+                },
+                {
+                  step: '3',
+                  title: 'Fast Delivery',
+                  description: 'Receive your medicines safely at your doorstep within 24-48 hours',
+                  gradient: 'from-teal-500 to-emerald-500'
+                },
+              ].map((item, idx) => (
+                <div key={idx} className="relative">
+                  <Card className="border-2 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300 hover:shadow-2xl group">
+                    <CardContent className="p-8 text-center relative">
+                      <div className={`w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br ${item.gradient} flex items-center justify-center font-bold text-3xl text-white shadow-2xl group-hover:scale-110 transition-transform duration-300`}>
+                        {item.step}
+                      </div>
+                      <h3 className="font-bold text-xl mb-3 text-slate-900 dark:text-slate-100">{item.title}</h3>
+                      <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {item.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                  {/* Connector Line */}
+                  {idx < 2 && (
+                    <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-slate-300 to-slate-400 dark:from-slate-700 dark:to-slate-600" />
+                  )}
                 </div>
-                <h3 className="font-semibold mb-2">Search or Upload</h3>
-                <p className="text-sm text-muted-foreground">
-                  Search for medicines or upload your prescription
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="mb-4 mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-2xl">
-                  2
-                </div>
-                <h3 className="font-semibold mb-2">Add to Cart & Checkout</h3>
-                <p className="text-sm text-muted-foreground">
-                  Review your order and complete secure payment
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="mb-4 mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-2xl">
-                  3
-                </div>
-                <h3 className="font-semibold mb-2">Get Delivery</h3>
-                <p className="text-sm text-muted-foreground">
-                  Receive your medicines at your doorstep
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 md:py-32 bg-primary text-primary-foreground">
-          <div className="container text-center">
-            <Pill className="h-12 w-12 mx-auto mb-6 opacity-90" />
-            <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-            <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
-              Join thousands of satisfied customers who trust Medora for their healthcare needs
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" asChild>
-                <Link href="/medicines">
-                  Browse Medicines
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <Link href="/register">
-                  Create Account
-                </Link>
-              </Button>
+        {/* CTA Section - Modern Gradient */}
+        <section className="py-24 md:py-32 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600" />
+          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10" />
+          
+          <div className="container relative z-10 text-center">
+            <div className="max-w-3xl mx-auto">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm mb-8 animate-bounce-slow">
+                <Pill className="h-10 w-10 text-white" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                Ready to Get Started?
+              </h2>
+              <p className="text-xl mb-10 text-blue-50 max-w-2xl mx-auto leading-relaxed">
+                Join thousands of satisfied customers who trust Medora for their healthcare needs
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  size="lg" 
+                  asChild
+                  className="bg-white text-blue-600 hover:bg-blue-50 shadow-2xl text-lg px-8 py-6 rounded-full group"
+                >
+                  <Link href="/medicines">
+                    Browse Medicines
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  asChild
+                  className="border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm text-lg px-8 py-6 rounded-full"
+                >
+                  <Link href="/register">
+                    Create Account
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
+                {[
+                  { value: '5000+', label: 'Happy Customers' },
+                  { value: '10k+', label: 'Medicines' },
+                  { value: '24/7', label: 'Support' },
+                ].map((stat, idx) => (
+                  <div key={idx} className="text-center">
+                    <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.value}</div>
+                    <div className="text-blue-100 text-sm md:text-base">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+
+          {/* Decorative Elements */}
+          <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-40 h-40 rounded-full bg-white/10 blur-3xl" />
         </section>
       </main>
 
