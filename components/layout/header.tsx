@@ -60,25 +60,35 @@ export function Header() {
       <header 
         className={`sticky top-0 z-50 w-full transition-all duration-300 ${
           scrolled 
-            ? 'bg-background/80 backdrop-blur-xl border-b shadow-sm' 
+            ? 'bg-background/95 backdrop-blur-xl border-b shadow-md' 
             : 'bg-background/95 backdrop-blur-md border-b'
         }`}
+        role="banner"
       >
         {/* Top Bar - Hidden on mobile */}
-        <div className="hidden lg:block border-b bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
-          <div className="container flex h-9 items-center justify-between text-xs font-medium">
+        <div className="hidden lg:block border-b bg-gradient-to-r from-[#1E9972] to-[#175B64] text-white">
+          <div className="container flex h-10 items-center justify-between text-xs font-medium">
             <div className="flex items-center gap-6">
-              <span className="flex items-center gap-1.5">
-                <Phone className="h-3.5 w-3.5" />
-                Call us: +880 1234-567890
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Mail className="h-3.5 w-3.5" />
-                support@medora.com
-              </span>
+              <a 
+                href="tel:+8801234567890" 
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                aria-label="Call us at +880 1234-567890"
+              >
+                <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Call us: +880 1234-567890</span>
+              </a>
+              <a 
+                href="mailto:support@medora.com" 
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                aria-label="Email us at support@medora.com"
+              >
+                <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>support@medora.com</span>
+              </a>
             </div>
-            <span className="flex items-center gap-1.5 animate-pulse">
-              ✨ Free delivery on orders over ৳1000
+            <span className="flex items-center gap-2">
+              <span className="inline-block animate-pulse">✨</span>
+              <span>Free delivery on orders over ৳1000</span>
             </span>
           </div>
         </div>
@@ -90,15 +100,25 @@ export function Header() {
             <Link 
               href="/" 
               className="flex items-center space-x-2.5 group"
+              aria-label="Medora Home"
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 transform group-hover:scale-105 transition-transform duration-300">
-                  <Pill className="h-6 w-6 md:h-7 md:w-7 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1E9972] to-[#175B64] rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#1E9972] to-[#175B64] transform group-hover:scale-105 transition-transform duration-300">
+                  <img 
+                    src="/logo.svg" 
+                    alt="Medora Logo" 
+                    className="h-7 w-7 md:h-8 md:w-8"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <Pill className="hidden h-6 w-6 md:h-7 md:w-7 text-white" />
                 </div>
               </div>
               <div className="hidden sm:flex flex-col">
-                <span className="font-bold text-xl md:text-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <span className="font-bold text-xl md:text-2xl bg-gradient-to-r from-[#1E9972] to-[#175B64] bg-clip-text text-transparent">
                   Medora
                 </span>
                 <span className="text-[10px] text-muted-foreground -mt-1">
@@ -112,19 +132,23 @@ export function Header() {
               <div className={`relative w-full transition-all duration-300 ${
                 searchFocused ? 'scale-[1.02]' : ''
               }`}>
-                <Search className={`absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors duration-200 ${
-                  searchFocused ? 'text-primary' : 'text-muted-foreground'
-                }`} />
+                <Search 
+                  className={`absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors duration-200 ${
+                    searchFocused ? 'text-[#1E9972]' : 'text-muted-foreground'
+                  }`} 
+                  aria-hidden="true"
+                />
                 <Input
                   type="search"
                   placeholder="Search medicines, brands, or health concerns..."
                   className={`pl-11 h-11 rounded-full border-2 transition-all duration-200 ${
                     searchFocused 
-                      ? 'border-primary shadow-lg shadow-primary/20' 
+                      ? 'border-[#1E9972] shadow-lg shadow-[#1E9972]/20 ring-2 ring-[#1E9972]/20' 
                       : 'border-transparent bg-muted/50 hover:bg-muted'
                   }`}
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setSearchFocused(false)}
+                  aria-label="Search medicines, brands, or health concerns"
                 />
               </div>
             </div>
@@ -135,7 +159,8 @@ export function Header() {
               <Button 
                 variant="ghost" 
                 size="icon"
-                className="md:hidden hover:bg-primary/10 hover:text-primary transition-colors"
+                className="md:hidden hover:bg-[#1E9972]/10 hover:text-[#1E9972] transition-colors"
+                aria-label="Search"
               >
                 <Search className="h-5 w-5" />
               </Button>
@@ -145,9 +170,9 @@ export function Header() {
                 variant="ghost" 
                 size="icon" 
                 asChild
-                className="hidden sm:flex hover:bg-pink-100 dark:hover:bg-pink-950 hover:text-pink-600 dark:hover:text-pink-400 transition-colors relative group"
+                className="hidden sm:flex hover:bg-[#1E9972]/10 hover:text-[#175B64] transition-colors relative group"
               >
-                <Link href="/dashboard/wishlist">
+                <Link href="/dashboard/wishlist" aria-label="Wishlist">
                   <Heart className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 </Link>
               </Button>
@@ -157,13 +182,15 @@ export function Header() {
                 variant="ghost" 
                 size="icon" 
                 asChild 
-                className="relative hover:bg-primary/10 hover:text-primary transition-colors group"
+                className="relative hover:bg-[#1E9972]/10 hover:text-[#1E9972] transition-colors group"
+                aria-label={`Shopping cart with ${cartItemCount} items`}
               >
                 <Link href="/cart">
                   <ShoppingCart className="h-5 w-5 group-hover:scale-110 transition-transform" />
                   {cartItemCount > 0 && (
                     <Badge
-                      className="absolute -right-1 -top-1 h-5 min-w-5 rounded-full px-1 text-[10px] flex items-center justify-center bg-gradient-to-r from-pink-500 to-purple-600 border-2 border-background animate-bounce"
+                      className="absolute -right-1 -top-1 h-5 min-w-5 rounded-full px-1 text-[10px] flex items-center justify-center bg-gradient-to-r from-[#1E9972] to-[#175B64] border-2 border-background"
+                      aria-live="polite"
                     >
                       {cartItemCount}
                     </Badge>
@@ -177,9 +204,9 @@ export function Header() {
                   <DropdownMenuTrigger asChild>
                     <Button 
                       variant="ghost" 
-                      className="hidden md:flex gap-1.5 hover:bg-primary/10 transition-colors"
+                      className="hidden md:flex gap-1.5 hover:bg-[#1E9972]/10 transition-colors"
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-purple-600">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#1E9972] to-[#175B64]">
                         <User className="h-4 w-4 text-white" />
                       </div>
                       <span className="max-w-[100px] truncate text-sm font-medium">
@@ -191,7 +218,7 @@ export function Header() {
                   <DropdownMenuContent align="end" className="w-64 p-2">
                     <DropdownMenuLabel className="p-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-purple-600">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#1E9972] to-[#175B64]">
                           <User className="h-5 w-5 text-white" />
                         </div>
                         <div className="flex flex-col space-y-0.5">
@@ -227,7 +254,7 @@ export function Header() {
                       <>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild className="cursor-pointer">
-                          <Link href="/admin" className="flex items-center gap-2 p-2 text-purple-600 dark:text-purple-400">
+                          <Link href="/admin" className="flex items-center gap-2 p-2 text-[#1E9972] dark:text-[#6B96BF]">
                             Admin Dashboard
                           </Link>
                         </DropdownMenuItem>
@@ -246,7 +273,7 @@ export function Header() {
                 <Button 
                   asChild 
                   size="sm"
-                  className="hidden md:flex bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:shadow-lg hover:shadow-primary/50 transition-all duration-300"
+                  className="hidden md:flex bg-gradient-to-r from-[#1E9972] to-[#175B64] hover:shadow-lg hover:shadow-[#1E9972]/50 transition-all duration-300"
                 >
                   <Link href="/login">Login</Link>
                 </Button>
@@ -261,7 +288,7 @@ export function Header() {
                   asChild
                 >
                   <Link href="/dashboard">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-purple-600">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#1E9972] to-[#175B64]">
                       <User className="h-4 w-4 text-white" />
                     </div>
                   </Link>
@@ -293,15 +320,15 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg hover:bg-primary/10 ${
+                    className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg hover:bg-[#1E9972]/10 ${
                       isActive 
-                        ? 'text-primary' 
-                        : 'text-foreground/80 hover:text-primary'
+                        ? 'text-[#1E9972]' 
+                        : 'text-foreground/80 hover:text-[#1E9972]'
                     }`}
                   >
                     {item.title}
                     {isActive && (
-                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-full" />
+                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-[#1E9972] to-[#175B64] rounded-full" />
                     )}
                   </Link>
                 );
@@ -327,13 +354,13 @@ export function Header() {
       >
         <div className="flex flex-col h-full">
           {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10">
+          <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-[#1E9972]/10 to-[#175B64]/10">
             <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#1E9972] to-[#175B64]">
                 <Pill className="h-5 w-5 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-lg bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <span className="font-bold text-lg bg-gradient-to-r from-[#1E9972] to-[#175B64] bg-clip-text text-transparent">
                   Medora
                 </span>
                 <span className="text-[10px] text-muted-foreground -mt-0.5">
@@ -354,11 +381,12 @@ export function Header() {
           {/* Mobile Search */}
           <div className="p-4 border-b">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
               <Input
                 type="search"
                 placeholder="Search medicines..."
-                className="pl-10 rounded-full bg-muted/50 border-transparent"
+                className="pl-10 rounded-full bg-muted/50 border-transparent focus:border-[#1E9972] focus:ring-2 focus:ring-[#1E9972]/20"
+                aria-label="Search medicines in mobile menu"
               />
             </div>
           </div>
@@ -374,14 +402,14 @@ export function Header() {
                     href={item.href}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                       isActive
-                        ? 'bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 text-primary'
+                        ? 'bg-gradient-to-r from-[#1E9972]/10 to-[#175B64]/10 text-[#1E9972]'
                         : 'hover:bg-muted text-foreground/80'
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.title}
                     {isActive && (
-                      <div className="ml-auto h-2 w-2 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600" />
+                      <div className="ml-auto h-2 w-2 rounded-full bg-gradient-to-r from-[#1E9972] to-[#175B64]" />
                     )}
                   </Link>
                 );
@@ -425,7 +453,7 @@ export function Header() {
                 {user.role === 'ADMIN' && (
                   <Link
                     href="/admin"
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted text-purple-600 dark:text-purple-400 transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted text-[#1E9972] dark:text-[#6B96BF] transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Admin Dashboard
@@ -436,7 +464,7 @@ export function Header() {
           </nav>
 
           {/* Mobile Menu Footer */}
-          <div className="p-4 border-t bg-gradient-to-r from-blue-600/5 via-purple-600/5 to-pink-600/5">
+          <div className="p-4 border-t bg-gradient-to-r from-[#1E9972]/5 to-[#175B64]/5">
             {user ? (
               <Button
                 onClick={() => {
@@ -451,7 +479,7 @@ export function Header() {
             ) : (
               <Button
                 asChild
-                className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:shadow-lg transition-all duration-300"
+                className="w-full bg-gradient-to-r from-[#1E9972] to-[#175B64] hover:shadow-lg transition-all duration-300"
               >
                 <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                   Login / Register
