@@ -1,65 +1,134 @@
+'use client';
+
 import Link from 'next/link';
-import { ArrowRight, Shield, Truck, Clock, FileText, Star, Pill } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowRight, Shield, Truck, Clock, FileText, Star, Pill, Sparkles, Heart, CheckCircle, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { MedicineCard } from '@/components/medicine/medicine-card';
+
+interface Medicine {
+  id: string;
+  name: string;
+  slug: string;
+  genericName: string;
+  price: number;
+  discountPrice?: number;
+  stock: number;
+  prescriptionRequired: boolean;
+  images: string[];
+  category: { name: string; slug: string };
+  brand?: { name: string; slug: string };
+}
 
 export default function Home() {
+  const [featuredMedicines, setFeaturedMedicines] = useState<Medicine[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeaturedMedicines();
+  }, []);
+
+  const fetchFeaturedMedicines = async () => {
+    try {
+      const response = await fetch('/api/medicines?featured=true&limit=8');
+      if (response.ok) {
+        const data = await response.json();
+        setFeaturedMedicines(data.medicines || []);
+      }
+    } catch (error) {
+      console.error('Failed to fetch featured medicines:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background py-20 md:py-32">
+        {/* Hero Section - Modern Gradient Design */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-20 md:py-32">
           <div className="container relative z-10">
-            <div className="mx-auto max-w-3xl text-center">
-              <Badge variant="secondary" className="mb-4">
-                🎉 Free delivery on orders over ৳1000
-              </Badge>
-              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 text-balance">
-                Your Trusted Online{' '}
-                <span className="text-primary">Pharmacy</span>
+            <div className="mx-auto max-w-4xl text-center">
+              {/* Floating Badge with Animation */}
+              <div className="inline-flex animate-fade-in-up mb-6">
+                <Badge className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-0 px-6 py-2 text-sm font-medium shadow-lg">
+                  <Sparkles className="w-4 h-4 mr-2 inline" />
+                  Free Delivery on Orders Over ৳1000
+                </Badge>
+              </div>
+              
+              {/* Main Heading with Gradient Text */}
+              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 animate-fade-in-up animation-delay-100">
+                <span className="bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+                  Your Trusted
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
+                  Online Pharmacy
+                </span>
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 text-balance">
-                Quality medicines delivered to your doorstep. Licensed pharmacists, genuine products, and exceptional care.
+              
+              <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-10 max-w-2xl mx-auto animate-fade-in-up animation-delay-200 leading-relaxed">
+                Quality medicines delivered to your doorstep with care and trust
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" asChild>
+              
+              {/* CTA Buttons with Modern Design */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in-up animation-delay-300">
+                <Button 
+                  size="lg" 
+                  asChild
+                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-8 py-6 rounded-full group"
+                >
                   <Link href="/medicines">
-                    Browse Medicines <ArrowRight className="ml-2 h-4 w-4" />
+                    Browse Medicines 
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  asChild
+                  className="border-2 border-slate-300 dark:border-slate-700 hover:border-blue-600 dark:hover:border-blue-500 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm text-lg px-8 py-6 rounded-full hover:shadow-xl transition-all duration-300"
+                >
                   <Link href="/prescription">
+                    <FileText className="mr-2 h-5 w-5" />
                     Upload Prescription
                   </Link>
                 </Button>
               </div>
 
-              {/* Trust Indicators */}
-              <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-primary" />
-                  <span>Licensed Pharmacy</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Star className="h-5 w-5 text-primary" />
-                  <span>5000+ Happy Customers</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Truck className="h-5 w-5 text-primary" />
-                  <span>Fast Delivery</span>
-                </div>
+              {/* Trust Indicators - Modern Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto animate-fade-in-up animation-delay-400">
+                {[
+                  { icon: Shield, label: 'Licensed Pharmacy', desc: 'Certified & Trusted' },
+                  { icon: Star, label: '5000+ Customers', desc: 'Highly Rated' },
+                  { icon: Truck, label: 'Fast Delivery', desc: '24-48 Hours' }
+                ].map((item, idx) => (
+                  <div 
+                    key={idx}
+                    className="flex flex-col items-center p-6 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-3 shadow-lg">
+                      <item.icon className="h-7 w-7 text-white" />
+                    </div>
+                    <p className="font-semibold text-slate-900 dark:text-slate-100 mb-1">{item.label}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{item.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Background Decoration */}
+          {/* Animated Background Elements */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
-            <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute left-1/4 top-20 w-96 h-96 rounded-full bg-blue-400/20 dark:bg-blue-600/10 blur-3xl animate-pulse-slow" />
+            <div className="absolute right-1/4 bottom-20 w-96 h-96 rounded-full bg-cyan-400/20 dark:bg-cyan-600/10 blur-3xl animate-pulse-slow animation-delay-1000" />
           </div>
         </section>
 
